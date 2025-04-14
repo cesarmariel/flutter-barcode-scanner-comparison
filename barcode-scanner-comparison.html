@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comparativa de Plugins Flutter para Escaneo de Códigos de Barras</title>
+    <style>
+        :root {
+            --notion-font: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol";
+            --notion-bg: #ffffff;
+            --notion-text: #37352f;
+            --notion-gray-bg: #f7f6f3;
+            --notion-light-gray: #e9e8e4;
+            --notion-border: #e9e8e4;
+            --notion-blue: #2383e2;
+            --notion-blue-highlight: rgba(35, 131, 226, 0.14);
+            --notion-blue-text: #0b6bcb;
+            --notion-green: #0f7b6c;
+            --notion-green-bg: rgba(15, 123, 108, 0.1);
+            --notion-red: #e03e3e;
+            --notion-red-bg: rgba(224, 62, 62, 0.1);
+            --notion-yellow: #dfab01;
+            --notion-yellow-bg: rgba(223, 171, 1, 0.1);
+            --notion-purple: #6940a5;
+            --notion-purple-bg: rgba(105, 64, 165, 0.1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--notion-font);
+            color: var(--notion-text);
+            line-height: 1.5;
+            background-color: var(--notion-bg);
+            padding: 20px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        h1, h2, h3, h4 {
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            border-bottom: 1px solid var(--notion-border);
+            padding-bottom: 0.5rem;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+        }
+
+        h3 {
+            font-size: 1.4rem;
+        }
+
+        p {
+            margin-bottom: 1rem;
+        }
+
+        .container {
+            padding: 20px 0;
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .header-icon {
+            font-size: 2.5rem;
+            margin-right: 1rem;
+        }
+
+        ul, ol {
+            margin-left: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        .tag {
+            display: inline-block;
+            padding: 3px 10px;
+            font-size: 0.85rem;
+            border-radius: 3px;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .tag-blue {
+            background-color: var(--notion-blue-highlight);
+            color: var(--notion-blue-text);
+        }
+
+        .tag-green {
+            background-color: var(--notion-green-bg);
+            color: var(--notion-green);
+        }
+
+        .tag-red {
+            background-color: var(--notion-red-bg);
+            color: var(--notion-red);
+        }
+
+        .tag-yellow {
+            background-color: var(--notion-yellow-bg);
+            color: var(--notion-yellow);
+        }
+
+        .tag-purple {
+            background-color: var(--notion-purple-bg);
+            color: var(--notion-purple);
+        }
+
+        .callout {
+            padding: 1rem;
+            border-radius: 3px;
+            margin: 1.5rem 0;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .callout-icon {
+            margin-right: 0.8rem;
+            font-size: 1.2rem;
+        }
+
+        .callout-blue {
+            background-color: var(--notion-blue-highlight);
+        }
+
+        .callout-yellow {
+            background-color: var(--notion-yellow-bg);
+        }
+
+        .card {
+            border: 1px solid var(--notion-border);
+            border-radius: 4px;
+            padding: 1.2rem;
+            margin-bottom: 1.5rem;
+            transition: box-shadow 0.2s;
+        }
+
+        .card:hover {
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .card-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 6px 12px;
+            background-color: var(--notion-blue);
+            color: white;
+            border-radius: 3px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: background-color 0.2s;
+        }
+
+        .button:hover {
+            background-color: #1b6bbc;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            font-size: 0.95rem;
+        }
+
+        th, td {
+            padding: 8px 12px;
+            border: 1px solid var(--notion-border);
+            text-align: left;
+        }
+
+        th {
+            background-color: var(--notion-gray-bg);
+            font-weight: 500;
+        }
+
+        tr:nth-child(even) {
+            background-color: var(--notion-gray-bg);
+        }
+
+        .rating {
+            display: flex;
+            align-items: center;
+        }
+
+        .rating-star {
+            color: gold;
+            margin-right: 2px;
+        }
+
+        .rating-text {
+            margin-left: 5px;
+        }
+
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid var(--notion-border);
+            margin-bottom: 1.5rem;
+        }
+
+        .tab {
+            padding: 8px 16px;
+            cursor: pointer;
+            font-weight: 500;
+            border-bottom: 2px solid transparent;
+        }
+
+        .tab.active {
+            border-bottom: 2px solid var(--notion-blue);
+            color: var(--notion-blue);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .feature-item {
+            padding: 1rem;
+            border: 1px solid var(--notion-border);
+            border-radius: 4px;
+        }
+
+        .feature-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .status-pill {
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            display: inline-block;
+        }
+
+        .status-good {
+            background-color: #e1f0db;
+            color: #0a7d33;
+        }
+
+        .status-medium {
+            background-color: #fcf3d7;
+            color: #946800;
+        }
+
+        .status-poor {
+            background-color: #fce8e6;
+            color: #d93026;
+        }
+
+        .toggle-container {
+            margin-bottom: 1rem;
+        }
+
+        .toggle-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.8rem;
+            background-color: var(--notion-gray-bg);
+            border-radius: 3px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .toggle-header:hover {
+            background-color: var(--notion-light-gray);
+        }
+
+        .toggle-content {
+            padding: 1rem;
+            display: none;
+            border: 1px solid var(--notion-border);
+            border-top: none;
+            margin-top: -3px;
+            border-bottom-left-radius: 3px;
+            border-bottom-right-radius: 3px;
+        }
+
+        .toggle-icon {
+            transition: transform 0.3s;
+        }
+
+        .toggle-open .toggle-icon {
+            transform: rotate(180deg);
+        }
+
+        .toggle-open .toggle-content {
+            display: block;
+        }
+
+        .code-block {
+            background-color: #f6f8fa;
+            border-radius: 3px;
+            padding: 16px;
+            font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+            font-size: 0.9rem;
+            overflow-x: auto;
+            margin: 1.5rem 0;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 16px;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            h2 {
+                font-size: 1.5rem;
+            }
+
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+
+            table {
+                font-size: 0.85rem;
+            }
+
+            th, td {
+                padding: 6px 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="header-icon">📱</div>
+            <h1>Comparativa de Plugins Flutter para Escaneo de Códigos de Barras</h1>
+        </div>
+
+        <div class="callout callout-blue">
+            <div class="callout-icon">💡</div>
+            <div>
+                Este análisis detallado se enfoca en <strong>velocidad de inicialización</strong> y <strong>precisión de escaneo</strong> como prioridades principales, considerando únicamente plugins que leen directamente desde la cámara del dispositivo (no de imágenes estáticas).
+            </div>
+        </div>
+
+        <h2>Resumen Ejecutivo</h2>
+        <p>En Flutter existen varios plugins para escanear códigos de barras. Esta comparativa analiza los más destacados según diferentes criterios para ayudarte a elegir el más adecuado para tu proyecto.</p>
+
+        <div class="tabs">
+            <div class="tab active" onclick="changeTab('overview')">Visión General</div>
+            <div class="tab" onclick="changeTab('comparison')">Tabla Comparativa</div>
+            <div class="tab" onclick="changeTab('recommendations')">Recomendaciones</div>
+        </div>
+
+        <div id="overview" class="tab-content active">
+            <h3>Plugins Analizados</h3>
+            <div class="feature-grid">
+                <div class="feature-item">
+                    <div class="feature-title">barcode_scan2</div>
+                    <p>Versión mantenida del clásico barcode_scan, basada en ZXing (Android) y MTBBarcodeScanner (iOS).</p>
+                    <div class="status-pill status-good">Actualizado 2025</div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-title">flutter_barcode_scanner</div>
+                    <p>Plugin popular para escaneo sencillo, usa ZXing en Android y AVCaptureSession en iOS.</p>
+                    <div class="status-pill status-poor">Sin actualizar desde ~2020</div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-title">mobile_scanner</div>
+                    <p>Scanner universal basado en Google ML Kit; usa CameraX (Android) y APIs de AVFoundation/Vision (iOS).</p>
+                    <div class="status-pill status-good">Actualizado 2025</div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-title">google_mlkit_barcode_scanning</div>
+                    <p>Plugin oficial/community de ML Kit para decodificar códigos con machine learning (sin flujo de cámara integrado).</p>
+                    <div class="status-pill status-good">Actualizado 2025</div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-title">native_barcode_scanner</div>
+                    <p>Enfoque nativo optimizado que minimiza transferencia entre Flutter y plataforma nativa.</p>
+                    <div class="status-pill status-medium">Actualizado 2024</div>
+                </div>
+            </div>
+
+            <h3>Descripción detallada de cada plugin</h3>
+            
+            <div class="toggle-container">
+                <div class="toggle-header" onclick="toggleSection(this)">
+                    <h4>barcode_scan2</h4>
+                    <div class="toggle-icon">▼</div>
+                </div>
+                <div class="toggle-content">
+                    <p>Es un plugin sencillo que abre la cámara para escanear un código y devuelve el resultado. Internamente, es un wrapper de librerías nativas clásicas: ZXing en Android y MTBBarcodeScanner en iOS.</p>
+                    <ul>
+                        <li><strong>Formatos soportados:</strong> gracias a ZXing, abarca la mayoría de códigos 1D y 2D estándares (UPC-A/E, EAN-8/13, Code 39/93/128, Codabar, ITF, QR, DataMatrix, Aztec, PDF417, etc.)</li>
+                        <li><strong>Velocidad de inicialización:</strong> muy rápida; prácticamente instantánea al llamar a la función de escaneo, ya que solo inicia la cámara y la decodificación nativa (no hay modelos pesados que cargar).</li>
+                        <li><strong>Precisión:</strong> adecuada para códigos bien impresos y condiciones normales, aunque al usar algoritmos tradicionales puede fallar con códigos muy dañados o en ángulos difíciles.</li>
+                        <li><strong>Facilidad de integración:</strong> muy alta – con una sola llamada asíncrona BarcodeScanner.scan() se obtiene el texto del código escaneado, manejando permisos y flashes automáticamente.</li>
+                        <li><strong>Nivel de personalización:</strong> limitado – el UI de escaneo es nativo predefinido (a pantalla completa), con opciones básicas como activar el flash (linterna). No permite personalizar la interfaz dentro de Flutter ni obtener flujo continuo; está pensado para "escanear y cerrar".</li>
+                        <li><strong>Peso del paquete:</strong> ligero – ZXing ocupa pocos cientos de KB, por lo que el impacto en el tamaño de la app es mínimo.</li>
+                        <li><strong>Mantenimiento:</strong> bueno – es un fork actualizado con null-safety; recibe actualizaciones periódicas (última versión publicada en 2025) tras la discontinuación del original.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="toggle-container">
+                <div class="toggle-header" onclick="toggleSection(this)">
+                    <h4>flutter_barcode_scanner</h4>
+                    <div class="toggle-icon">▼</div>
+                </div>
+                <div class="toggle-content">
+                    <p>Plugin muy popular por su simplicidad, con API similar a barcode_scan2. Usa ZXing en Android y AVFoundation (AVCaptureSession) en iOS para decodificar.</p>
+                    <ul>
+                        <li><strong>Formatos:</strong> también cubre "barcodes, QR codes, etc." – en la práctica los mismos que ZXing soporta (Code128, QR, EAN-13, etc.).</li>
+                        <li><strong>Velocidad de inicialización:</strong> rápida y sin configuración especial (solo se debe invocar su método estático).</li>
+                        <li><strong>Precisión:</strong> comparable a barcode_scan2 al usar los mismos motores de detección; confiable en general, aunque hereda las limitaciones de ZXing en casos de baja calidad.</li>
+                        <li><strong>Facilidad de integración:</strong> excelente – proporciona métodos estáticos como FlutterBarcodeScanner.scanBarcode() que abren la cámara y gestionan permisos; por ejemplo, se puede escanear con una línea de código y obtener el resultado.</li>
+                        <li><strong>Personalización:</strong> baja – permite configurar algunos parámetros básicos antes de escanear (como el color del overlay de escaneo, el texto del botón de cancelar o si mostrar el icono de flash), pero no es posible insertar la vista de cámara en tu propio diseño Flutter ni modificar la experiencia más allá de esas opciones.</li>
+                        <li><strong>Tamaño del paquete:</strong> muy ligero (similar a barcode_scan2, se apoya en ZXing).</li>
+                        <li><strong>Mantenimiento:</strong> pobre – aunque sigue siendo funcional, no se actualiza desde hace ~3 años y el puntaje de mantenimiento es bajo. Puede presentar inconvenientes en dispositivos muy nuevos.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="toggle-container">
+                <div class="toggle-header" onclick="toggleSection(this)">
+                    <h4>mobile_scanner</h4>
+                    <div class="toggle-icon">▼</div>
+                </div>
+                <div class="toggle-content">
+                    <p>Es actualmente uno de los plugins más recomendados para escaneo de códigos en Flutter. Utiliza machine learning (Google ML Kit) para detectar y decodificar códigos de barras de forma nativa, aprovechando CameraX en Android y APIs de AVFoundation/Vision en iOS.</p>
+                    <ul>
+                        <li><strong>Formatos soportados:</strong> prácticamente todos los formatos estándar 1D y 2D: Codabar, Code 39/93/128, EAN-8/13, ITF, UPC-A/E, Aztec, DataMatrix, PDF417, QR, etc. Por defecto detecta cualquier formato, aunque se puede restringir a un subconjunto para mejorar rendimiento.</li>
+                        <li><strong>Velocidad de inicialización:</strong> buena – la cámara inicia rápido con CameraX, aunque la primera vez puede requerir descargar el modelo ML Kit si no viene incluido (el plugin permite elegir incluir el modelo en la app, ~3–10 MB extra, o descargarlo bajo demanda para pesar solo ~600 KB). Después de eso, el escaneo es casi en tiempo real.</li>
+                        <li><strong>Precisión:</strong> alta – la detección por ML es robusta incluso con códigos rotados o parcialmente borrosos, superando a los métodos tradicionales en muchos casos. Puede leer códigos a mayor distancia o con peor iluminación que ZXing.</li>
+                        <li><strong>Facilidad de integración:</strong> buena – proporciona un widget MobileScanner que se puede insertar en el árbol de widgets, y un MobileScannerController para controlar la cámara. Configurar el escáner requiere ligeramente más código que los anteriores, pero sigue siendo sencillo.</li>
+                        <li><strong>Nivel de personalización:</strong> alto – al ser un widget, puedes sobreponer gráficos (ej. un recuadro o animación sobre la cámara) fácilmente. El controlador permite cambiar de cámara (frontal/posterior), encender/apagar la linterna, hacer zoom, definir un área de escaneo específica e incluso escanear imágenes de galería.</li>
+                        <li><strong>Peso del paquete:</strong> moderado – si se incluye el modelo de ML Kit dentro de la app, aumenta el tamaño unos 3–10 MB. Si no, el impacto es bajo (el código nativo pesa <1 MB y el modelo se descarga en ejecución según necesidad).</li>
+                        <li><strong>Mantenimiento:</strong> excelente – plugin activo y bien mantenido (actualizado frecuentemente, compatible con Dart 3, ~2000 likes en pub.dev).</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="toggle-container">
+                <div class="toggle-header" onclick="toggleSection(this)">
+                    <h4>google_mlkit_barcode_scanning</h4>
+                    <div class="toggle-icon">▼</div>
+                </div>
+                <div class="toggle-content">
+                    <p>Este plugin expone directamente la API de ML Kit de Google para escanear códigos. A diferencia de los demás, no proporciona por sí mismo una interfaz de cámara; uno debe manualmente obtener frames (por ejemplo con el plugin camera) y pasarlos al detector de ML Kit.</p>
+                    <ul>
+                        <li><strong>Formatos soportados:</strong> los mismos que la tecnología ML Kit ofrece – es decir, todos los formatos comunes (EAN, QR, Code 128, PDF417, etc.).</li>
+                        <li><strong>Velocidad y precisión:</strong> equivalentes a MobileScanner, puesto que utiliza el mismo motor de ML por debajo. Tiene alta precisión en general y funcionamiento offline en el dispositivo.</li>
+                        <li><strong>Inicialización:</strong> aquí depende enteramente de cómo el desarrollador gestione la cámara; el plugin en sí simplemente carga el modelo ML Kit. Puede requerir conexión la primera vez si el modelo no está integrado.</li>
+                        <li><strong>Facilidad de integración:</strong> baja comparada con los otros – es una librería de nivel más bajo. Se requiere más código para unir la captura de cámara con la función de reconocimiento.</li>
+                        <li><strong>Personalización:</strong> total – al armar tú mismo la solución, puedes diseñar la UI y comportamiento exactamente a la medida. Por ejemplo, podrías implementar un flujo de escaneo múltiple, filtros de resultados, etc., todo controlado en Dart.</li>
+                        <li><strong>Peso:</strong> similar a MobileScanner (usa las mismas dependencias nativas ML Kit; el plugin en sí es ligero).</li>
+                        <li><strong>Mantenimiento:</strong> bueno – aunque Google no lo mantiene directamente, es mantenido por la comunidad de Flutter MLKit (última versión reciente de 2025).</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="toggle-container">
+                <div class="toggle-header" onclick="toggleSection(this)">
+                    <h4>native_barcode_scanner</h4>
+                    <div class="toggle-icon">▼</div>
+                </div>
+                <div class="toggle-content">
+                    <p>Plugin orientado a alto rendimiento nativo, desarrollado por terceros, que envuelve las capacidades de reconocimiento nativas de cada plataforma. En Android utiliza la visión de Google ML Kit (similar a MobileScanner) y en iOS emplea AVFoundation directamente.</p>
+                    <ul>
+                        <li><strong>Formatos soportados:</strong> en Android, todos los que cubre ML Kit (Code 39, 93, 128, EAN-8/13, ITF, QR, DataMatrix, etc.), e iOS soporta la mayoría vía AVFoundation, aunque con algunas excepciones (p.ej. Codabar y UPC-A no disponibles en iOS nativo).</li>
+                        <li><strong>Velocidad de inicialización:</strong> muy rápida – el preview de cámara nativo se integra velozmente gracias a PlatformView. Al no mandar cada frame vía Dart, la latencia es baja incluso en dispositivos modestos.</li>
+                        <li><strong>Precisión:</strong> alta – combina lo mejor de cada plataforma nativa. En Android el uso de ML Kit garantiza buen reconocimiento (similar a MobileScanner). En iOS, AVFoundation tiene detección optimizada de códigos QR y varios 1D integrada en el sistema.</li>
+                        <li><strong>Facilidad de integración:</strong> buena – provee un widget NativeBarcodeScannerView que se puede colocar en la interfaz Flutter; los resultados de escaneo se obtienen vía streams de eventos.</li>
+                        <li><strong>Personalización:</strong> media – al ser un PlatformView, se puede colocar encima una interfaz Flutter (ej. dibujar un rectángulo de enfoque sobre la vista de cámara). Soporta alternar cámara, controlar el flash y otros ajustes básicos mediante métodos del plugin.</li>
+                        <li><strong>Peso del paquete:</strong> moderado – similar a MobileScanner: en Android se enlaza ML Kit (posiblemente de forma no incluida para no aumentar mucho la app) y en iOS prácticamente no añade peso (usa APIs del sistema).</li>
+                        <li><strong>Mantenimiento:</strong> moderado – versión estable publicada en 2024, con actualizaciones menos frecuentes (no tan popular, ~23 likes).</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div id="comparison" class="tab-content">
+            <h3>Tabla Comparativa</h3>
+            
+            <div class="callout callout-yellow">
+                <div class="callout-icon">📊</div>
+                <div>
+                    Esta tabla resume las características principales de cada plugin en términos de formatos soportados, velocidad, precisión, facilidad de integración, personalización, peso y mantenimiento.
+                </div>
+            </div>
+
+            <div style="overflow-x: auto;">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Plugin</th>
+                            <th>Formatos</th>
+                            <th>Velocidad</th>
+                            <th>Precisión</th>
+                            <th>Integración</th>
+                            <th>Personalización</th>
+                            <th>Peso</th>
+                            <th>Mantenimiento</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>barcode_scan2</strong></td>
+                            <td>Códigos 1D/2D estándar</td>
+                            <td><span class="status-pill status-good">Alta</span></td>
+                            <td><span class="status-pill status-medium">Buena</span></td>
+                            <td><span class="status-pill status-good">Muy fácil</span></td>
+                            <td><span class="status-pill status-poor">Baja</span></td>
+                            <td><span class="status-pill status-good">Ligero</span></td>
+                            <td><span class="status-pill status-good">Activo (2025)</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>flutter_barcode_scanner</strong></td>
+                            <td>Códigos 1D/2D comunes</td>
+                            <td><span class="status-pill status-good">Alta</span></td>
+                            <td><span class="status-pill status-medium">Buena</span></td>
+                            <td><span class="status-pill status-good">Muy fácil</span></td>
+                            <td><span class="status-pill status-poor">Baja</span></td>
+                            <td><span class="status-pill status-good">Ligero</span></td>
+                            <td><span class="status-pill status-poor">Obsoleto (~2020)</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>mobile_scanner</strong></td>
+                            <td>Todos los formatos comunes</td>
+                            <td><span class="status-pill status-medium">Media/Alta</span></td>
+                            <td><span class="status-pill status-good">Alta</span></td>
+                            <td><span class="status-pill status-good">Fácil</span></td>
+                            <td><span class="status-pill status-good">Alta</span></td>
+                            <td><span class="status-pill status-medium">Moderado</span></td>
+                            <td><span class="status-pill status-good">Excelente (2025)</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>google_mlkit</strong></td>
+                            <td>Todos los formatos ML Kit</td>
+                            <td><span class="status-pill status-medium">Variable</span></td>
+                            <td><span class="status-pill status-good">Alta</span></td>
+                            <td><span class="status-pill status-poor">Baja</span></td>
+                            <td><span class="status-pill status-good">Total</span></td>
+                            <td><span class="status-pill status-medium">Moderado</span></td>
+                            <td><span class="status-pill status-good">Bueno (2025)</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>native_barcode_scanner</strong></td>
+                            <td>Formatos comunes 1D/2D (limitaciones en iOS)</td>
+                            <td><span class="status-pill status-good">Alta</span></td>
+                            <td><span class="status-pill status-good">Alta</span></td>
+                            <td><span class="status-pill status-good">Fácil</span></td>
+                            <td><span class="status-pill status-medium">Media</span></td>
+                            <td><span class="status-pill status-medium">Moderado</span></td>
+                            <td><span class="status-pill status-medium">Decente (2024)</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="callout callout-blue">
+                <div class="callout-icon">📝</div>
+                <div>
+                    <strong>Nota:</strong> Todos estos plugins requieren Android 5.0+ o superior y en iOS suelen requerir iOS 11/12+. Se debe agregar la clave de permiso de cámara en Info.plist y la solicitud de permiso en AndroidManifest según corresponda.
+                </div>
+            </div>
+        </div>
+
+        <div id="recommendations" class="tab-content">
+            <h3>Recomendaciones por caso de uso</h3>
+
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">📱 Escaneo sencillo y esporádico</h4>
+                </div>
+                <p><strong>Recomendación:</strong> <span class="tag tag-blue">barcode_scan2</span></p>
+                <p>Para apps que necesitan escanear un código QR o de barras ocasionalmente.</p>
+                <p>Su integración ultra simple (una función que devuelve el resultado) y peso ligero facilitan añadir la funcionalidad sin complicaciones. Estas soluciones muestran una interfaz de cámara a pantalla completa, escanean el código y cierran; son ideales si no necesitas personalizar la experiencia de escaneo.</p>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">🔄 Escaneo continuo o en serie</h4>
+                </div>
+                <p><strong>Recomendación:</strong> <span class="tag tag-green">mobile_scanner</span> o <span class="tag tag-purple">native_barcode_scanner</span></p>
+                <p>Para aplicaciones que necesitan escanear muchos productos en un inventario o un lector de tickets.</p>
+                <p>Ambos permiten mantener la cámara activa y procesar múltiples códigos sucesivamente sin reabrir la cámara cada vez. MobileScanner destaca por su rapidez y soporte amplio – considerado "el más rápido y preciso" entre varios probados – lo que viene bien en escenarios de volumen alto. NativeBarcodeScanner es también muy rápido y podría darte unos FPS extra en dispositivos Android antiguos gracias a su menor overhead nativo.</p>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">🔍 Condiciones desafiantes</h4>
+                </div>
+                <p><strong>Recomendación:</strong> <span class="tag tag-green">mobile_scanner</span></p>
+                <p>Si la prioridad es la precisión en condiciones desafiantes (códigos dañados, muy pequeños, baja iluminación).</p>
+                <p>Los motores basados en machine learning (como los de mobile_scanner y ML Kit) tienden a rendir mejor que ZXing en esos casos. ML Kit aprovecha técnicas de visión artificial para detectar códigos aunque partes estén borrosas, y tiene heurísticas para orientaciones variadas.</p>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">🎨 Personalización de UI</h4>
+                </div>
+                <p><strong>Recomendación:</strong> <span class="tag tag-green">mobile_scanner</span> o <span class="tag tag-yellow">google_mlkit_barcode_scanning</span></p>
+                <p>Si necesitas personalizar la interfaz de escaneo (recuadros, animaciones, controles personalizados).</p>
+                <p>Estos plugins te permiten poner la vista de la cámara dentro de tu diseño Flutter y superponer elementos. Mobile_scanner da más flexibilidad en controlar la lógica desde Dart, mientras que google_mlkit te da control total pero requiere más implementación.</p>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">⚖️ Tamaño de app mínimo</h4>
+                </div>
+                <p><strong>Recomendación:</strong> <span class="tag tag-blue">barcode_scan2</span></p>
+                <p>Para proyectos que requieran poca carga y compatibilidad amplia.</p>
+                <p>Las soluciones basadas en ZXing (barcode_scan2, etc.) tienen la ventaja de no inflar el tamaño de la app ni depender de componentes externos. Añaden menos de 1 MB y funcionan offline directamente.</p>
+            </div>
+
+            <h3>Mejor opción general</h3>
+            <div class="callout callout-blue">
+                <div class="callout-icon">🏆</div>
+                <div>
+                    <p><strong>MobileScanner</strong> se perfila como la opción más equilibrada y potente para la mayoría de proyectos.</p>
+                    <p>Ofrece gran velocidad y precisión gracias a ML Kit, soporta todos los formatos habituales, es fácil de integrar y altamente personalizable, con una comunidad activa respaldándolo.</p>
+                </div>
+            </div>
+
+            <div class="toggle-container">
+                <div class="toggle-header" onclick="toggleSection(this)">
+                    <h4>Ejemplo de integración: mobile_scanner</h4>
+                    <div class="toggle-icon">▼</div>
+                </div>
+                <div class="toggle-content">
+                    <p>Este es un ejemplo básico de cómo implementar mobile_scanner en una aplicación Flutter:</p>
+                    <div class="code-block">
+import 'package:flutter/material.dart';
+import 'package:mobile_scanner/mobile_scanner.dart';
+
+class BarcodeScannerPage extends StatefulWidget {
+  @override
+  _BarcodeScannerPageState createState() => _BarcodeScannerPageState();
+}
+
+class _BarcodeScannerPageState extends State<BarcodeScannerPage> {
+  MobileScannerController controller = MobileScannerController();
+  bool _isScanning = true;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('Scanner'), actions: [
+        IconButton(
+          icon: Icon(_isScanning ? Icons.stop : Icons.play_arrow),
+          onPressed: () {
+            setState(() {
+              _isScanning 
+                  ? controller.stop()
+                  : controller.start();
+              _isScanning = !_isScanning;
+            });
+          },
+        ),
+        IconButton(
+          icon: ValueListenableBuilder(
+            valueListenable: controller.torchState,
+            builder: (context, state, child) {
+              switch (state) {
+                case TorchState.off:
+                  return Icon(Icons.flash_off);
+                case TorchState.on:
+                  return Icon(Icons.flash_on);
+              }
+            },
+          ),
+          onPressed: () => controller.toggleTorch(),
+        ),
+        IconButton(
+          icon: Icon(Icons.flip_camera_ios),
+          onPressed: () => controller.switchCamera(),
+        ),
+      ]),
+      body: Stack(
+        children: [
+          MobileScanner(
+            controller: controller,
+            onDetect: (capture) {
+              final List<Barcode> barcodes = capture.barcodes;
+              for (final barcode in barcodes) {
+                // Tu lógica cuando se detecta un código
+                print('Barcode found! ${barcode.rawValue}');
+              }
+            },
+          ),
+          // Overlay para guía de escaneo
+          Center(
+            child: Container(
+              width: 250,
+              height: 250,
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: Colors.green,
+                  width: 3.0,
+                ),
+                borderRadius: BorderRadius.circular(12),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function changeTab(tabId) {
+            // Desactivar todas las pestañas y contenidos
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            // Activar la pestaña y contenido seleccionados
+            document.querySelector(`.tab[onclick*="${tabId}"]`).classList.add('active');
+            document.getElementById(tabId).classList.add('active');
+        }
+
+        function toggleSection(element) {
+            const container = element.parentElement;
+            container.classList.toggle('toggle-open');
+        }
+
+        // Inicializar todas las secciones plegables cerradas
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.toggle-container').forEach(container => {
+                container.classList.remove('toggle-open');
+            });
+        });
+    </script>
+</body>
+</html>
